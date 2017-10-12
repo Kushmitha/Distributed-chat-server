@@ -1,0 +1,27 @@
+A simple replicated chat server that uses multicast to distribute the chat messages to the different replicas.
+
+CHATCLIENT: 
+//takes an argument <ip:port> that denotes the port at which the server is running
+1. To connect the chatclient to a server - 	./chatclient <127.0.0.1:8001>
+2. Commands that the client supporst:
+   /join 3 //to join chatroom #3
+   /nick ABC //to set a nickname for the client
+   /part //to leave a chatroom
+   /quit //to exit
+
+ CHATSERVER: 
+ //takes two arguments; the first is a configuration file that contains the forwarding and binding addresses of each server and the second is the position in the list that this particular server instance represents
+ Ex: ./chatserver servers.txt 2
+
+ where servers.txt contains
+
+127.0.0.1:8000,127.0.0.1:5000
+127.0.0.1:8001,127.0.0.1:5001
+127.0.0.1:8002,127.0.0.1:5002
+
+and this particular instance denotes that the server would listen for messages on (its bind address) 127.0.0.1:5001 and when it has a message for the third server, it would send the message to (the third server’s forwarding address) 127.0.0.1:8002, and when it has a message for the first server, it sends it to 127.0.0.1:8000.
+The server also supports two options:
+-v :- for debug statements to stdout
+-o :- to denote the ordering type : fifo, total or unordered
+
+
